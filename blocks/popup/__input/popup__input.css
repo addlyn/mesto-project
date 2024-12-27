@@ -20,3 +20,24 @@
     line-height: 15px;
   }
 }
+
+.popup__input-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+.popup__input-error_active {
+  display: block;
+}
+
+.popup__input_type_error {
+  border: 2px solid red;
+}
+
+.button_disabled {
+  background-color: #b3b3b3; /* Цвет из макета */
+  cursor: not-allowed;
+}
+

@@ -330,6 +330,296 @@ cardForm.addEventListener('submit', handleCardFormSubmit);
 document.querySelectorAll('.popup').forEach(popup => {
   popup.classList.add('popup_is-animated');
 });
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+
+
+
+
+
+
+
+
+// Общие элементы формы
+const descriptionInput = document.querySelector('.popup__input_type_description');
+const formElement = document.querySelector('.popup__form');
+const saveButton = formElement.querySelector('.popup__button');
+
+// Показать ошибку
+function showInputError(inputElement, errorMessage) {
+  const errorElement = document.querySelector(`.${inputElement.name}-error`);
+  errorElement.textContent = errorMessage; // Устанавливаем кастомное сообщение
+  errorElement.classList.add('popup__input-error_active');
+  inputElement.classList.add('popup__input_type_error');
+}
+
+// Скрыть ошибку
+function hideInputError(inputElement) {
+  const errorElement = document.querySelector(`.${inputElement.name}-error`);
+  errorElement.textContent = '';
+  errorElement.classList.remove('popup__input-error_active');
+  inputElement.classList.remove('popup__input_type_error');
+}
+
+// Проверка валидности поля
+function checkInputValidity(inputElement) {
+  if (!inputElement.validity.valid) {
+    let errorMessage = '';
+    if (inputElement.validity.valueMissing) {
+      errorMessage = 'Вы пропустили это поле.';
+    } else if (inputElement.validity.tooShort) {
+      errorMessage = `Минимальная длина ${inputElement.minLength} символа. Сейчас ${inputElement.value.length}.`;
+    } else if (inputElement.validity.tooLong) {
+      errorMessage = `Максимальная длина ${inputElement.maxLength} символов.`;
+    }
+    showInputError(inputElement, errorMessage);
+  } else {
+    hideInputError(inputElement);
+  }
+}
+
+// Проверка валидности формы
+function checkFormValidity() {
+  const isValid = nameInput.validity.valid && descriptionInput.validity.valid;
+  saveButton.disabled = !isValid;
+  saveButton.classList.toggle('button_disabled', !isValid);
+}
+
+// Навешиваем обработчики
+[nameInput, descriptionInput].forEach((inputElement) => {
+  inputElement.addEventListener('input', () => {
+    checkInputValidity(inputElement);
+    checkFormValidity();
+  });
+});
+
+// Проверяем при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+  checkFormValidity();
+});
+
+
+
+// Функция для очистки ошибок
+function clearInputErrors() {
+  const inputElements = profilePopup.querySelectorAll('.popup__input');
+  inputElements.forEach(inputElement => {
+    const errorElement = document.querySelector(`.${inputElement.name}-error`);
+    errorElement.textContent = ''; // Очищаем текст ошибки
+    errorElement.classList.remove('popup__input-error_active');
+    inputElement.classList.remove('popup__input_type_error');
+  });
+}
+
+// Обработчик закрытия поп-апа для редактирования профиля
+profilePopupCloseButton.addEventListener('click', function() {
+  closeModal(profilePopup);
+  profilePopupForm.reset(); // Сбрасываем значения формы
+
+  // Очищаем все ошибки
+  clearInputErrors();
+});
+
+// Функция для открытия поп-апа с заполнением формы данными
+function fillProfileForm() {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileDescription.textContent;
+  openModal(profilePopup);
+}
+
+// Обработчик отправки формы
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault(); // Отменяем стандартное поведение формы
+
+  const name = nameInput.value;
+  const job = jobInput.value;
+
+  profileTitle.textContent = name;
+  profileDescription.textContent = job;
+
+  closeModal(profilePopup);
+  profileForm.reset();
+  clearInputErrors(); // Очищаем ошибки после отправки формы
+}
+
+// Проверка валидности поля
+function checkInputValidity(inputElement) {
+  if (!inputElement.validity.valid) {
+    let errorMessage = '';
+    if (inputElement.validity.valueMissing) {
+      errorMessage = 'Вы пропустили это поле.';
+    } else if (inputElement.validity.tooShort) {
+      errorMessage = `Минимальная длина ${inputElement.minLength} символа. Сейчас ${inputElement.value.length}.`;
+    } else if (inputElement.validity.tooLong) {
+      errorMessage = `Максимальная длина ${inputElement.maxLength} символов.`;
+    }
+    showInputError(inputElement, errorMessage);
+  } else {
+    hideInputError(inputElement);
+  }
+}
+
+// Проверка валидности формы
+function checkFormValidity() {
+  const isValid = nameInput.validity.valid && descriptionInput.validity.valid;
+  saveButton.disabled = !isValid;
+  saveButton.classList.toggle('button_disabled', !isValid);
+}
+
+// Навешиваем обработчики
+[nameInput, descriptionInput].forEach((inputElement) => {
+  inputElement.addEventListener('input', () => {
+    checkInputValidity(inputElement);
+    checkFormValidity();
+  });
+});
+// !!!!!!!!!!!!!!!!!!!!!!!!! 1
+
+
+
+
+
+
+// Находим форму и поля в поп-апе для добавления карточки
+const saveCardButton = cardPopup.querySelector('.popup__button');
+
+// Функция для проверки валидности поля
+function checkInputValidity(inputElement) {
+  if (!inputElement.validity.valid) {
+    let errorMessage = '';
+    
+    if (inputElement.validity.valueMissing) {
+      errorMessage = 'Это обязательное поле';
+    } else if (inputElement.validity.typeMismatch) {
+      errorMessage = 'Введите правильный URL';
+    } else if (inputElement.validity.tooShort) {
+      errorMessage = `Минимальная длина ${inputElement.minLength} символов. Сейчас ${inputElement.value.length}.`;
+    } else if (inputElement.validity.tooLong) {
+      errorMessage = `Максимальная длина ${inputElement.maxLength} символов.`;
+    }
+    showInputError(inputElement, errorMessage);
+  } else {
+    hideInputError(inputElement);
+  }
+}
+
+// Показать ошибку
+function showInputError(inputElement, errorMessage) {
+  const errorElement = document.querySelector(`.${inputElement.name}-error`);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+  inputElement.classList.add('popup__input_type_error');
+}
+
+// Скрыть ошибку
+function hideInputError(inputElement) {
+  const errorElement = document.querySelector(`.${inputElement.name}-error`);
+  errorElement.textContent = '';
+  errorElement.classList.remove('popup__input-error_active');
+  inputElement.classList.remove('popup__input_type_error');
+}
+
+// Функция для проверки валидности формы (для кнопки "Сохранить")
+function checkFormValidity() {
+  const isValid = cardInputTitle.validity.valid && cardInputLink.validity.valid;
+  saveCardButton.disabled = !isValid;
+  saveCardButton.classList.toggle('button_disabled', !isValid);
+}
+
+// Навешиваем обработчики
+[cardInputTitle, cardInputLink].forEach((inputElement) => {
+  inputElement.addEventListener('input', () => {
+    checkInputValidity(inputElement);
+    checkFormValidity();
+  });
+});
+
+// Проверка при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+  checkFormValidity();
+});
+
+
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+
+  const newCardData = {
+    name: cardInputTitle.value,
+    link: cardInputLink.value
+  };
+
+  renderCards([newCardData]);  // Добавляем одну новую карточку
+
+  closeModal(cardPopup);
+  cardForm.reset(); // Сбрасываем форму
+  checkFormValidity(); // Перепроверяем форму после сброса
+}
+
+cardForm.addEventListener('submit', handleCardFormSubmit);
+//!!!!!!!!!!!!!!!!!!!!!!!!!! 2
+
+
+
+// Функция для открытия поп-апа
+function openModal(popup) {
+  popup.classList.add('popup_is-opened');
+}
+
+// Функция для закрытия поп-апа
+function closeModal(popup) {
+  popup.classList.remove('popup_is-opened');
+}
+
+// Обработчики для закрытия поп-апов по клику на оверлей
+document.querySelectorAll('.popup').forEach(popup => {
+  popup.addEventListener('click', (event) => {
+    if (event.target === popup) {
+      closeModal(popup);
+    }
+  });
+});
+
+// Пример кода для открытия и закрытия поп-апов (оставляем ваши предыдущие обработчики):
+profileEditButton.addEventListener('click', function() {
+  openModal(profilePopup);
+});
+
+profilePopupCloseButton.addEventListener('click', function() {
+  closeModal(profilePopup);
+});
+//!!!!!!!!!!!!!!!!!!3
+
+
+// Функция для открытия поп-апа
+function openModal(popup) {
+  popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', handleEscClose); // Добавляем обработчик нажатия Esc
+}
+
+// Функция для закрытия поп-апа
+function closeModal(popup) {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', handleEscClose); // Убираем обработчик нажатия Esc
+}
+
+// Функция для закрытия поп-апов по нажатию Esc
+function handleEscClose(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_is-opened');
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
+
+// Обработчик для закрытия поп-апов по клику на оверлей
+document.querySelectorAll('.popup').forEach((popup) => {
+  popup.addEventListener('click', function (evt) {
+    if (evt.target === popup) {
+      closeModal(popup);
+    }
+  });
+});
+//!!!!!!!!!!!!!!!!!!4
 
