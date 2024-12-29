@@ -21,3 +21,27 @@
   right: 0;
   z-index: 10;
 }
+
+/* Стиль для поп-апов с анимацией */
+.popup_is-animated {
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Плавное изменение прозрачности */
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Когда поп-ап открыт */
+.popup_is-opened.popup_is-animated {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s; /* Без задержки при открытии */
+}
+
+/* Прочие стили поп-апов */
+.popup {
+  display: none;
+  /* Остальные стили */
+}
+
+.popup_is-opened {
+  display: block;
+}
