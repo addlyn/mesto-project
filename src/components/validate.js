@@ -1,3 +1,5 @@
+// Функция для отображения или скрытия ошибки
+
 export function showInputError(input, errorMessage) {
   const errorElement = input
     .closest(".popup__form")
@@ -6,6 +8,8 @@ export function showInputError(input, errorMessage) {
   errorElement.textContent = errorMessage;
   errorElement.classList.add("popup__input-error_active");
 }
+
+// Функция для отображения или скрытия ошибки
 
 export function hideInputError(input) {
   const errorElement = input
